@@ -22,7 +22,7 @@ function Decode(fPort, bytes) {
 function bin2HexStr(bytesArr) {
   var str = "";
   for(var i=0; i<bytesArr.length; i++) {
-    var tmp = bytesArr[i].toString(16);
+    var tmp = (bytesArr[i] & 0xff).toString(16);
     if(tmp.length == 1) {
       tmp = "0" + tmp;
     }
