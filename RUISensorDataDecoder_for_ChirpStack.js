@@ -37,6 +37,12 @@ function parseShort(str, base) {
   return (n << 16) >> 16;
 }
 
+// convert string to triple bytes integer
+function parseTriple(str, base) {
+  var n = parseInt(str, base);
+  return (n << 8) >> 8;
+}
+
 // decode Hex sensor string data to object
 function rakSensorDataDecode(hexStr) {
   var str = hexStr;
@@ -60,9 +66,9 @@ function rakSensorDataDecode(hexStr) {
         break;
       case 0x0188:// GPS
         var gps = {};
-        gps.latitude = (parseInt(str.substring(4, 10), 16) * 0.0001).toFixed(4) + "°";
-        gps.longitude = (parseInt(str.substring(10, 16), 16) * 0.0001).toFixed(4) + "°";
-        gps.altitude = (parseInt(str.substring(16, 22), 16) * 0.01).toFixed(1) + "m";
+        gps.latitude = (parseTriple(str.substring(4, 10), 16) * 0.0001).toFixed(4) + "°";
+        gps.longitude = (parseTriple(str.substring(10, 16), 16) * 0.0001).toFixed(4) + "°";
+        gps.altitude = (parseTriple(str.substring(16, 22), 16) * 0.01).toFixed(1) + "m";
         myObj.gps = gps;
         str = str.substring(22);
         break;
