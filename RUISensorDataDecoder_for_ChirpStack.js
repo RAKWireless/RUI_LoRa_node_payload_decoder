@@ -48,6 +48,7 @@ function rakSensorDataDecode(hexStr) {
   var str = hexStr;
   var myObj = {};
   var environment = {};
+  var magnetometer = {};
 
   while (str.length > 4) {
     var flag = parseInt(str.substring(0, 4), 16);
@@ -97,12 +98,16 @@ function rakSensorDataDecode(hexStr) {
         str = str.substring(16);
         break;
       case 0x0902:// magnetometer x
-        var magnetometer = {};
         magnetometer.x = (parseShort(str.substring(4, 8), 16) * 0.01).toFixed(2) + "μT";
-        magnetometer.y = (parseShort(str.substring(12, 16), 16) * 0.01).toFixed(2) + "μT";
-        magnetometer.z = (parseShort(str.substring(20, 24), 16) * 0.01).toFixed(2) + "μT";
-        myObj.magnetometer = magnetometer;
-        str = str.substring(24);
+        str = str.substring(8);
+        break;
+      case 0x0a02:// magnetometer y
+        magnetometer.y = (parseShort(str.substring(4, 8), 16) * 0.01).toFixed(2) + "μT";
+        str = str.substring(8);
+        break;
+      case 0x0b02:// magnetometer z
+        magnetometer.z = (parseShort(str.substring(4, 8), 16) * 0.01).toFixed(2) + "μT";
+        str = str.substring(8);
         break;
       default:
         str = str.substring(7);
@@ -112,6 +117,8 @@ function rakSensorDataDecode(hexStr) {
   if(Object.getOwnPropertyNames(environment).length > 0) {
     myObj.environment = environment;
   }
-
+  if(Object.getOwnPropertyNames(magnetometer).length > 0) {
+    myObj.magnetometer = magnetometer;
+  }
   return myObj;
 }
