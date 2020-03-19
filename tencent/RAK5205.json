@@ -1,0 +1,176 @@
+{
+  "version": "1.0",
+  "profile": {
+    "ProductId": "ZZI31NJ7YB",
+    "CategoryId": "1"
+  },
+  "properties": [
+    {
+      "id": "temperature",
+      "name": "温度",
+      "desc": "",
+      "mode": "rw",
+      "define": {
+        "type": "float",
+        "min": "-100",
+        "max": "100",
+        "start": "0",
+        "step": "0.01",
+        "unit": "℃"
+      },
+      "required": false
+    },
+    {
+      "id": "relative_humidity",
+      "name": "湿度",
+      "desc": "",
+      "mode": "rw",
+      "define": {
+        "type": "int",
+        "min": "0",
+        "max": "100",
+        "start": "0",
+        "step": "1",
+        "unit": "%RH"
+      },
+      "required": false
+    },
+    {
+      "id": "barometric_pressure",
+      "name": "大气压",
+      "desc": "",
+      "mode": "rw",
+      "define": {
+        "type": "float",
+        "min": "-10000",
+        "max": "10000",
+        "start": "0",
+        "step": "0.01",
+        "unit": "hPa"
+      },
+      "required": false
+    },
+    {
+      "id": "gas_resistance",
+      "name": "气阻",
+      "desc": "",
+      "mode": "rw",
+      "define": {
+        "type": "float",
+        "min": "0",
+        "max": "1000",
+        "start": "0",
+        "step": "0.01",
+        "unit": "kΩ"
+      },
+      "required": false
+    },
+    {
+      "id": "trixial_x",
+      "name": "三轴X",
+      "desc": "",
+      "mode": "rw",
+      "define": {
+        "type": "int",
+        "min": "-1000",
+        "max": "1000",
+        "start": "0",
+        "step": "1",
+        "unit": "mg"
+      },
+      "required": false
+    },
+    {
+      "id": "trixial_y",
+      "name": "三轴Y",
+      "desc": "",
+      "mode": "rw",
+      "define": {
+        "type": "int",
+        "min": "-1000",
+        "max": "1001",
+        "start": "0",
+        "step": "1",
+        "unit": "mg"
+      },
+      "required": false
+    },
+    {
+      "id": "trixial_z",
+      "name": "三轴Z",
+      "desc": "",
+      "mode": "rw",
+      "define": {
+        "type": "int",
+        "min": "-1000",
+        "max": "1000",
+        "start": "0",
+        "step": "1",
+        "unit": "mg"
+      },
+      "required": false
+    },
+    {
+      "id": "gps_longitude",
+      "name": "经度",
+      "desc": "",
+      "mode": "rw",
+      "define": {
+        "type": "float",
+        "min": "-180",
+        "max": "180",
+        "start": "0",
+        "step": "0.0001",
+        "unit": "°"
+      },
+      "required": false
+    },
+    {
+      "id": "gps_latitude",
+      "name": "纬度",
+      "desc": "",
+      "mode": "rw",
+      "define": {
+        "type": "float",
+        "min": "-90",
+        "max": "90",
+        "start": "0",
+        "step": "0.0001",
+        "unit": "°"
+      },
+      "required": false
+    },
+    {
+      "id": "gps_altitude",
+      "name": "海拔",
+      "desc": "",
+      "mode": "rw",
+      "define": {
+        "type": "int",
+        "min": "-1000",
+        "max": "10000",
+        "start": "0",
+        "step": "1",
+        "unit": "m"
+      },
+      "required": false
+    },
+    {
+      "id": "battery_voltage",
+      "name": "电压",
+      "desc": "",
+      "mode": "rw",
+      "define": {
+        "type": "float",
+        "min": "0",
+        "max": "10",
+        "start": "0",
+        "step": "0.01",
+        "unit": "V"
+      },
+      "required": false
+    }
+  ],
+  "events": [],
+  "actions": []
+}
