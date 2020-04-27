@@ -1,0 +1,124 @@
+// chirpstack application function to decode uplink data.
+// Decode decodes an array of bytes into an object.
+//  - fPort contains the LoRaWAN fPort number
+//  - bytes is an array of bytes, e.g. [225, 230, 255, 0]
+// The function must return an object
+// for RAK, return {
+//                     "DecodeDataHex": {} // RAK5205 sensor data in Hex format
+//                     "DecodeDataObj": {} // RAK5205 sensor data object.
+//                 }
+// The function prototype cannot be modified.
+function Decode(fPort, bytes) {
+  var decoded = {"DecodeDataHex": {}, "DecodeDataObj": {}};
+  var hexString=bin2HexStr(bytes);
+  decoded.DecodeDataHex = hexString;
+  decoded.DecodeDataObj = rakSensorDataDecode(hexString);
+
+  return decoded;
+}
+
+// convert array of bytes to hex string.
+// e.g: 0188053797109D5900DC140802017A0768580673256D0267011D040214AF0371FFFFFFDDFC2E
+function bin2HexStr(bytesArr) {
+  var str = "";
+  for(var i=0; i<bytesArr.length; i++) {
+    var tmp = (bytesArr[i] & 0xff).toString(16);
+    if(tmp.length == 1) {
+      tmp = "0" + tmp;
+    }
+    str += tmp;
+  }
+  return str;
+}
+
+// convert string to short integer
+function parseShort(str, base) {
+  var n = parseInt(str, base);
+  return (n << 16) >> 16;
+}
+
+// convert string to Quadruple bytes integer
+function parseQuadruple(str, base) {
+  var n = parseInt(str, base);
+  return (n << 32) >> 32;
+}
+
+// decode Hex sensor string data to object
+function rakSensorDataDecode(hexStr) {
+  var str = hexStr;
+  var myObj = {};
+  var environment = {};
+  var magnetometer = {};
+
+  while (str.length > 4) {
+    var flag = parseInt(str.substring(0, 4), 16);
+    switch (flag) {
+      case 0x0768:// Humidity
+        environment.humidity = ((parseShort(str.substring(4, 6), 16) * 0.01 / 2) * 100).toFixed(1) + '% RH';
+        str = str.substring(6);
+        break;
+      case 0x0673:// Atmospheric pressure
+        environment.barometer = (parseShort(str.substring(4, 8), 16) * 0.1).toFixed(2) + "hPa";
+        str = str.substring(8);
+        break;
+      case 0x0267:// Temperature
+        environment.temperature = (parseShort(str.substring(4, 8), 16) * 0.1).toFixed(2) + "°C";
+        str = str.substring(8);
+        break;
+      case 0x0188:// GPS 01880209B707067D7A720000E36C
+        var gps = {};
+        gps.latitude = (parseQuadruple(str.substring(4, 12), 16) * 0.000001).toFixed(6) + "°";
+        gps.longitude = (parseQuadruple(str.substring(12, 20), 16) * 0.000001).toFixed(6) + "°";
+        gps.altitude = (parseQuadruple(str.substring(20, 28), 16) * 0.01).toFixed(1) + "m";
+        myObj.gps = gps;
+        str = str.substring(28);
+        break;
+      case 0x0371:// Triaxial acceleration
+        var acceleration = {};
+        acceleration.x = (parseShort(str.substring(4, 8), 16) * 0.001).toFixed(3) + "g";
+        acceleration.y = (parseShort(str.substring(8, 12), 16) * 0.001).toFixed(3) + "g";
+        acceleration.z = (parseShort(str.substring(12, 16), 16) * 0.001).toFixed(3) + "g";
+        myObj.acceleration = acceleration;
+        str = str.substring(16);
+        break;
+      case 0x0402:// air resistance
+        environment.gasResistance = (parseShort(str.substring(4, 8), 16) * 0.01).toFixed(2)  + "KΩ";
+        str = str.substring(8);
+        break;
+      case 0x0802:// Battery Voltage
+        myObj.battery = (parseShort(str.substring(4, 8), 16) * 0.01).toFixed(2) + "V";
+        str = str.substring(8);
+        break;
+      case 0x0586:// gyroscope
+        var gyroscope = {};
+        gyroscope.x = (parseShort(str.substring(4, 8), 16) * 0.01).toFixed(2) + "°/s";
+        gyroscope.y = (parseShort(str.substring(8, 12), 16) * 0.01).toFixed(2) + "°/s";
+        gyroscope.z = (parseShort(str.substring(12, 16), 16) * 0.01).toFixed(2) + "°/s";
+        myObj.gyroscope = gyroscope;
+        str = str.substring(16);
+        break;
+      case 0x0902:// magnetometer x
+        magnetometer.x = (parseShort(str.substring(4, 8), 16) * 0.01).toFixed(2) + "μT";
+        str = str.substring(8);
+        break;
+      case 0x0a02:// magnetometer y
+        magnetometer.y = (parseShort(str.substring(4, 8), 16) * 0.01).toFixed(2) + "μT";
+        str = str.substring(8);
+        break;
+      case 0x0b02:// magnetometer z
+        magnetometer.z = (parseShort(str.substring(4, 8), 16) * 0.01).toFixed(2) + "μT";
+        str = str.substring(8);
+        break;
+      default:
+        str = str.substring(7);
+        break;
+    }
+  }
+  if(Object.getOwnPropertyNames(environment).length > 0) {
+    myObj.environment = environment;
+  }
+  if(Object.getOwnPropertyNames(magnetometer).length > 0) {
+    myObj.magnetometer = magnetometer;
+  }
+  return myObj;
+}
