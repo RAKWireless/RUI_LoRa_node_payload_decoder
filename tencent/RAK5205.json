@@ -72,8 +72,8 @@
       "mode": "r",
       "define": {
         "type": "int",
-        "min": "-1000",
-        "max": "1000",
+        "min": "-100000",
+        "max": "100000",
         "start": "0",
         "step": "1",
         "unit": "mg"
@@ -87,8 +87,8 @@
       "mode": "r",
       "define": {
         "type": "int",
-        "min": "-1000",
-        "max": "1001",
+        "min": "-100000",
+        "max": "100000",
         "start": "0",
         "step": "1",
         "unit": "mg"
@@ -102,8 +102,8 @@
       "mode": "r",
       "define": {
         "type": "int",
-        "min": "-1000",
-        "max": "1000",
+        "min": "-100000",
+        "max": "100000",
         "start": "0",
         "step": "1",
         "unit": "mg"
