@@ -71,12 +71,12 @@
       "desc": "",
       "mode": "r",
       "define": {
-        "type": "int",
+        "type": "float",
         "min": "-100000",
         "max": "100000",
         "start": "0",
-        "step": "1",
-        "unit": "mg"
+        "step": "0.001",
+        "unit": "g"
       },
       "required": false
     },
@@ -86,12 +86,12 @@
       "desc": "",
       "mode": "r",
       "define": {
-        "type": "int",
+        "type": "float",
         "min": "-100000",
         "max": "100000",
         "start": "0",
-        "step": "1",
-        "unit": "mg"
+        "step": "0.001",
+        "unit": "g"
       },
       "required": false
     },
@@ -101,12 +101,12 @@
       "desc": "",
       "mode": "r",
       "define": {
-        "type": "int",
+        "type": "float",
         "min": "-100000",
         "max": "100000",
         "start": "0",
-        "step": "1",
-        "unit": "mg"
+        "step": "0.001",
+        "unit": "g"
       },
       "required": false
     },
