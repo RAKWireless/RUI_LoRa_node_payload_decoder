@@ -113,7 +113,7 @@ function rakSensorDataDecode(hexStr) {
       case 0x0b02:// magnetometer z
         myObj.Magnetometer_Z = (parseShort(str.substring(4, 8), 16) / 100);
         str = str.substring(8);
-        break
+        break;
       default:
         str = str.substring(7);
         break;
